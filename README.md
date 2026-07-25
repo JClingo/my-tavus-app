@@ -4,10 +4,10 @@ A simple, responsive web app that helps beginners learn box breathing in a
 live, one-to-one session with Vincent, a Tavus PAL. It is built with React,
 TypeScript, Vite, and Tavus Conversational Video Interface (CVI).
 
-The landing page creates a Tavus conversation and passes the returned
-`conversation_url` to Tavus's generated `<Conversation>` component. The
-component then joins the call and provides video, audio, device selection,
-screen sharing, chat, and closed captions.
+The landing page asks for the participant's preferred name, creates a Tavus
+conversation, and passes the returned `conversation_url` to Tavus's generated
+`<Conversation>` component. The component then joins the call and provides
+video, audio, device selection, screen sharing, chat, and closed captions.
 
 ## Prerequisites
 
@@ -63,12 +63,14 @@ next to `package.json`, so Vite can load it.
 
 ## How the integration works
 
-1. `src/App.tsx` sends a `POST` request to
+1. The participant enters the name Vincent should use.
+2. `src/App.tsx` sends a `POST` request to
    `https://tavusapi.com/v2/conversations`.
-2. The request supplies `face_id` and `pal_id` using the Vite environment
-   variables.
-3. Tavus returns a `conversation_url`.
-4. React stores that URL and renders:
+3. The request supplies `face_id`, `pal_id`, and a `conversational_context`
+   string containing the participant's validated preferred name. Tavus appends
+   this per-session context to Vincent's PAL prompt.
+4. Tavus returns a `conversation_url`.
+5. React stores that URL and renders:
 
    ```tsx
    <CVIProvider>
@@ -79,7 +81,7 @@ next to `package.json`, so Vite can load it.
    </CVIProvider>
    ```
 
-5. Leaving the call clears the URL and returns the user to the landing page.
+6. Leaving the call clears the URL and returns the user to the landing page.
 
 API failures and missing conversation URLs are shown on the landing page
 instead of leaving the interface in a loading state.

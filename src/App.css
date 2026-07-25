@@ -158,10 +158,54 @@ h1 {
   line-height: 1.7;
 }
 
+.session-form {
+  width: min(520px, 100%);
+  margin-top: 34px;
+}
+
+.session-form label {
+  display: block;
+  margin-bottom: 9px;
+  color: #435e50;
+  font-size: 0.76rem;
+  font-weight: 700;
+  text-align: left;
+}
+
+.name-field {
+  display: flex;
+  padding: 5px;
+  border: 1px solid rgba(61, 100, 80, 0.2);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.75);
+  box-shadow: 0 12px 35px rgba(45, 71, 57, 0.08);
+}
+
+.name-field:focus-within {
+  border-color: #6d9983;
+  box-shadow: 0 0 0 3px rgba(109, 153, 131, 0.18);
+}
+
+.name-field input {
+  min-width: 0;
+  flex: 1;
+  border: 0;
+  outline: 0;
+  padding: 0 18px;
+  background: transparent;
+  color: #263a30;
+  font: inherit;
+  font-size: 0.9rem;
+}
+
+.name-field input::placeholder {
+  color: #929d97;
+}
+
 .start-button {
   display: inline-flex;
-  min-width: 240px;
-  margin-top: 34px;
+  min-width: 172px;
+  margin: 0;
   border: 0;
   border-radius: 999px;
   padding: 16px 25px;
@@ -272,6 +316,34 @@ h1 {
   .session-details {
     flex-direction: column;
     align-items: center;
+  }
+
+  .name-field {
+    padding: 0;
+    border: 0;
+    border-radius: 0;
+    flex-direction: column;
+    gap: 10px;
+    background: transparent;
+    box-shadow: none;
+  }
+
+  .name-field:focus-within {
+    box-shadow: none;
+  }
+
+  .name-field input {
+    box-sizing: border-box;
+    width: 100%;
+    min-height: 52px;
+    border: 1px solid rgba(61, 100, 80, 0.2);
+    border-radius: 999px;
+    background: rgba(255, 255, 255, 0.75);
+  }
+
+  .start-button {
+    width: 100%;
+    min-height: 52px;
   }
 
   .app--in-call {
