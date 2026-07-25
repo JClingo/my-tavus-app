@@ -1,7 +1,8 @@
-# Tavus CVI React App
+# Still — Guided Breathwork with Vincent
 
-A responsive video-conversation app built with React, TypeScript, Vite, and
-Tavus Conversational Video Interface (CVI).
+A simple, responsive web app that helps beginners learn box breathing in a
+live, one-to-one session with Vincent, a Tavus PAL. It is built with React,
+TypeScript, Vite, and Tavus Conversational Video Interface (CVI).
 
 The landing page creates a Tavus conversation and passes the returned
 `conversation_url` to Tavus's generated `<Conversation>` component. The
@@ -31,12 +32,12 @@ conversation.
    ```dotenv
    VITE_TAVUS_API_KEY=your_api_key_here
    VITE_REPLICA_ID=r90bbd427f71
-   VITE_PERSONA_ID=pcb7a34da5fe
+   VITE_PERSONA_ID=pcde5abf91e4
    ```
 
-   `VITE_REPLICA_ID` and `VITE_PERSONA_ID` may be changed to IDs from your
-   Tavus account. The values above are also used as the application's
-   fallbacks.
+   `VITE_PERSONA_ID` defaults to Vincent's PAL (`pcde5abf91e4`).
+   `VITE_REPLICA_ID` identifies the face used by that PAL. Both may be changed
+   to compatible IDs from your Tavus account.
 
 3. Start the development server:
 

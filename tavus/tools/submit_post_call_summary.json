@@ -1,0 +1,58 @@
+{
+  "name": "submit_post_call_summary",
+  "description": "Generate a summary of the call and submit it to Tavus. Using the full transcript and any perception data, generate a summary of the call, including any incidents that occurred and a subjective score of how relaxed the user was before, during, and after the session.",
+  "parameters": {
+    "type": "object",
+    "required": [
+      "summary",
+      "relaxation_score_pre",
+      "relaxation_score_during",
+      "relaxation_score_post"
+    ],
+    "properties": {
+      "summary": {
+        "type": "string",
+        "description": "A 2-4 sentence summary of the call, including any incidents that occurred."
+      },
+      "relaxation_score_pre": {
+        "type": "number",
+        "description": "A subjective score of how relaxed the user was before the session."
+      },
+      "relaxation_score_during": {
+        "type": "number",
+        "description": "A subjective score of how relaxed the user was during the session."
+      },
+      "relaxation_score_post": {
+        "type": "number",
+        "description": "A subjective score of how relaxed the user was after the session."
+      },
+      "incidents": {
+        "type": "string",
+        "description": "A structured list of any incidents that occurred during the call."
+      }
+    }
+  },
+  "origin": null,
+  "trigger_type": "post_call",
+  "on_call": null,
+  "on_resolve": "fire_and_forget",
+  "delivery": {
+    "app_message": false,
+    "api": {
+      "url": "https://intake.tavus.io/api/conversation/post-call-result",
+      "method": "POST",
+      "body_template": {
+        "summary": "{summary}",
+        "relaxation_score_pre": "{relaxation_score_pre}",
+        "relaxation_score_during": "{relaxation_score_during}",
+        "relaxation_score_post": "{relaxation_score_post}",
+        "incidents": "{incidents}"
+      },
+      "timeout": 10
+    }
+  },
+  "static_filler": null,
+  "connector_id": null,
+  "source_connector_id": null,
+  "needs_config": false
+}

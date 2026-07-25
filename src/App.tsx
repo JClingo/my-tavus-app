@@ -27,7 +27,7 @@ function App() {
         },
         body: JSON.stringify({
           face_id: import.meta.env.VITE_REPLICA_ID || 'r90bbd427f71',
-          pal_id: import.meta.env.VITE_PERSONA_ID || 'pcb7a34da5fe',
+          pal_id: import.meta.env.VITE_PERSONA_ID || 'pcde5abf91e4',
         }),
       })
 
@@ -63,39 +63,82 @@ function App() {
     <CVIProvider>
       <main className={conversationUrl ? 'app app--in-call' : 'app'}>
         {conversationUrl ? (
-          <section className="conversation-shell" aria-label="Tavus conversation">
+          <section
+            className="conversation-shell"
+            aria-label="Breathwork session with Vincent"
+          >
             <Conversation
               conversationUrl={conversationUrl}
               onLeave={handleLeave}
             />
           </section>
         ) : (
-          <section className="welcome-card">
-            <span className="eyebrow">Tavus CVI · Vite + React</span>
-            <h1>Start a face-to-face conversation with AI.</h1>
-            <p className="intro">
-              Launch a live, responsive video session powered by Tavus
-              Conversational Video Interface.
-            </p>
+          <section className="welcome" aria-labelledby="page-title">
+            <header className="site-header">
+              <a className="brand" href="/" aria-label="Still home">
+                <span className="brand-mark" aria-hidden="true">
+                  <span />
+                  <span />
+                  <span />
+                </span>
+                Still
+              </a>
+              <span className="session-length">About 5 minutes</span>
+            </header>
 
-            <button
-              className="start-button"
-              type="button"
-              onClick={createConversation}
-              disabled={isStarting}
-            >
-              {isStarting ? 'Creating conversation…' : 'Start conversation'}
-            </button>
+            <div className="hero-content">
+              <div className="guide-badge">
+                <span className="guide-avatar" aria-hidden="true">V</span>
+                <span>
+                  <strong>Guided by Vincent</strong>
+                  <small>Beginner breathwork facilitator</small>
+                </span>
+              </div>
 
-            {error && (
-              <p className="error-message" role="alert">
-                {error}
+              <p className="eyebrow">A little space to reset</p>
+              <h1 id="page-title">Take a breath.<br />We’ll do the rest together.</h1>
+              <p className="intro">
+                Meet Vincent, your personal breathwork guide. He’ll walk you
+                through a gentle box-breathing exercise at your pace—no
+                experience needed.
               </p>
-            )}
 
-            <p className="privacy-note">
-              Camera and microphone access will be requested when the call starts.
-            </p>
+              <button
+                className="start-button"
+                type="button"
+                onClick={createConversation}
+                disabled={isStarting}
+              >
+                <span className="button-icon" aria-hidden="true">▶</span>
+                {isStarting ? 'Preparing your session…' : 'Begin guided session'}
+              </button>
+
+              {error && (
+                <p className="error-message" role="alert">
+                  {error}
+                </p>
+              )}
+
+              <ul className="session-details" aria-label="What to expect">
+                <li>
+                  <span aria-hidden="true">◌</span>
+                  Live, one-to-one guidance
+                </li>
+                <li>
+                  <span aria-hidden="true">♬</span>
+                  Find a quiet, comfortable spot
+                </li>
+                <li>
+                  <span aria-hidden="true">⌁</span>
+                  Camera and microphone needed
+                </li>
+              </ul>
+
+              <p className="safety-note">
+                Breathwork is a wellbeing practice, not medical care. Stop if
+                you feel dizzy, uncomfortable, or short of breath.
+              </p>
+            </div>
           </section>
         )}
       </main>
