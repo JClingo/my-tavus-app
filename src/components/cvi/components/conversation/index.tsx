@@ -3,6 +3,7 @@ import {
 	DailyAudioTrack,
 	DailyVideo,
 	useDevices,
+	useDailyEvent,
 	useLocalSessionId,
 	useMeetingState,
 	useScreenVideoTrack,
@@ -22,6 +23,7 @@ import styles from './conversation.module.css';
 interface ConversationProps {
 	onLeave: () => void;
 	conversationUrl: string;
+	onTelemetryEvent?: (event: unknown) => void;
 }
 
 const VideoPreview = React.memo(({ id }: { id: string }) => {
@@ -173,10 +175,21 @@ const MoreMenu = memo(() => {
 
 MoreMenu.displayName = 'MoreMenu';
 
-export const Conversation = React.memo(({ onLeave, conversationUrl }: ConversationProps) => {
+export const Conversation = React.memo(
+	({ onLeave, conversationUrl, onTelemetryEvent }: ConversationProps) => {
 	const { joinCall, leaveCall } = useCVICall();
 	const meetingState = useMeetingState();
 	const { hasMicError } = useDevices();
+
+	useDailyEvent(
+		'app-message',
+		useCallback(
+			(event: unknown) => {
+				onTelemetryEvent?.(event);
+			},
+			[onTelemetryEvent]
+		)
+	);
 
 	useEffect(() => {
 		if (meetingState === 'error') {

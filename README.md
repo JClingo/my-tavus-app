@@ -86,6 +86,30 @@ next to `package.json`, so Vite can load it.
 API failures and missing conversation URLs are shown on the landing page
 instead of leaving the interface in a loading state.
 
+## Session telemetry and summaries
+
+During a call, the app listens to Tavus interaction events delivered through
+Daily app messages. It keeps an in-memory session record containing:
+
+- Session duration and total event count
+- User and Vincent utterance counts
+- Speaking duration for each participant
+- Interrupted turn count
+- Arguments emitted by Vincent's configured `submit_post_call_summary` tool
+
+After the call closes, the app displays those metrics and any PAL summary
+payload. It also polls `GET /v2/conversations/{id}?verbose=true` briefly for
+the finalized transcript, shutdown reason, and Raven perception analysis.
+Post-call processing is asynchronous, so those fields may remain unavailable
+if Tavus has not completed them within the polling window or the PAL does not
+emit the configured summary tool.
+
+Telemetry currently lives only in React memory and is discarded on refresh.
+Persist it through a consent-aware backend if historical reporting is needed.
+Transcripts and perception analysis can contain sensitive personal data; do
+not persist or transmit them without an appropriate privacy policy and user
+consent.
+
 ## Project structure
 
 ```text
