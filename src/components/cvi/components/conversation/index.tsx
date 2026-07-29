@@ -52,10 +52,12 @@ const PreviewVideos = React.memo(() => {
 	const { isScreenSharing } = useLocalScreenshare();
 	const replicaIds = useReplicaIDs();
 	const replicaId = replicaIds[0];
+	const replicaScreenState = useScreenVideoTrack(replicaId);
+	const isReplicaPresenting = !replicaScreenState.isOff;
 
 	return (
 		<>
-			{isScreenSharing && <VideoPreview id={replicaId} />}
+			{(isScreenSharing || isReplicaPresenting) && <VideoPreview id={replicaId} />}
 			<VideoPreview id={localId} />
 		</>
 	);
@@ -70,11 +72,19 @@ const SelfView = React.memo(() => (
 const MainVideo = React.memo(() => {
 	const replicaIds = useReplicaIDs();
 	const localId = useLocalSessionId();
-	const videoState = useVideoTrack(replicaIds[0]);
-	const screenVideoState = useScreenVideoTrack(localId);
-	const meetingState = useMeetingState();
-	const isScreenSharing = !screenVideoState.isOff;
 	const replicaId = replicaIds[0];
+	const videoState = useVideoTrack(replicaId);
+	const localScreenState = useScreenVideoTrack(localId);
+	const replicaScreenState = useScreenVideoTrack(replicaId);
+	const meetingState = useMeetingState();
+	const isLocalScreenSharing = !localScreenState.isOff;
+	const isReplicaPresenting = !replicaScreenState.isOff;
+	const isShowingScreen = isReplicaPresenting || isLocalScreenSharing;
+	const mainSessionId = isReplicaPresenting
+		? replicaId
+		: isLocalScreenSharing
+			? localId
+			: replicaId;
 	const [hasReplicaConnected, setHasReplicaConnected] = useState(false);
 
 	useEffect(() => {
@@ -97,16 +107,21 @@ const MainVideo = React.memo(() => {
 
 	return (
 		<div
-			className={`${styles.mainVideoContainer} ${isScreenSharing ? styles.mainVideoContainerScreenSharing : ''}`}
+			className={`${styles.mainVideoContainer} ${isShowingScreen ? styles.mainVideoContainerScreenSharing : ''}`}
 		>
 			<DailyVideo
-				automirror
-				sessionId={isScreenSharing ? localId : replicaId}
-				type={isScreenSharing ? 'screenVideo' : 'video'}
+				automirror={!isReplicaPresenting}
+				sessionId={mainSessionId}
+				type={isShowingScreen ? 'screenVideo' : 'video'}
 				className={`${styles.mainVideo}
-				${isScreenSharing ? styles.mainVideoScreenSharing : ''}
-				${videoState.isOff ? styles.mainVideoHidden : ''}`}
+				${isShowingScreen ? styles.mainVideoScreenSharing : ''}
+				${!isShowingScreen && videoState.isOff ? styles.mainVideoHidden : ''}`}
 			/>
+			{isReplicaPresenting && (
+				<div className={styles.presentationBadge} aria-live="polite">
+					Box breathing guide
+				</div>
+			)}
 			<DailyAudioTrack sessionId={replicaId} />
 		</div>
 	);

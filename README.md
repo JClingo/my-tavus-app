@@ -130,6 +130,13 @@ The files under `src/components/cvi/` were copied into the project by the
 Tavus CVI UI CLI, so they can be customized locally. Re-running an `add`
 command may update generated files; review those changes before keeping them.
 
+The conversation layout also watches Vincent's remote `screenVideo` track.
+When the PAL's Slide Presenter capability starts presenting `Guide.png`, that
+track becomes the main contain-fit view while Vincent's camera moves into the
+preview. When presentation stops, Vincent's camera automatically returns to
+the main view. This handling is required by the custom CVI UI; the PAL Maker
+test interface provides its own presenter surface.
+
 To initialize or restore the generated CVI components:
 
 ```bash
